@@ -1,3 +1,19 @@
-ReactDOMRe.renderToElementWithId(<Component1 message="Hello! Click this text." />, "index1");
+let handle = (event) => {
+  Js.log("cambio")
+}
 
-ReactDOMRe.renderToElementWithId(<Component2 greeting="Hello!" />, "index2");
+ReactDOMRe.renderToElementWithId(
+  <DatePickerComponent 
+    props = {
+      value: None,
+      hints: {false},
+      dayHint: {""},
+      monthHint: {""},
+      yearHint: {""},
+      className: {""},
+      maxLength: {2},
+      onChange: {handle}
+    }
+  />, 
+  "index1"
+);

@@ -3,15 +3,25 @@
 
 var React = require("react");
 var ReactDOMRe = require("reason-react/src/ReactDOMRe.js");
-var Component1$ReactHooksTemplate = require("./Component1.bs.js");
-var Component2$ReactHooksTemplate = require("./Component2.bs.js");
+var DatePickerComponent$ReactHooksTemplate = require("./DatePickerComponent.bs.js");
 
-ReactDOMRe.renderToElementWithId(React.createElement(Component1$ReactHooksTemplate.make, {
-          message: "Hello! Click this text."
+function handle($$event) {
+  console.log("cambio");
+  return /* () */0;
+}
+
+ReactDOMRe.renderToElementWithId(React.createElement(DatePickerComponent$ReactHooksTemplate.make, {
+          props: /* record */[
+            /* value */undefined,
+            /* hints */false,
+            /* dayHint */"",
+            /* monthHint */"",
+            /* yearHint */"",
+            /* className */"",
+            /* maxLength */2,
+            /* onChange */handle
+          ]
         }), "index1");
 
-ReactDOMRe.renderToElementWithId(React.createElement(Component2$ReactHooksTemplate.make, {
-          greeting: "Hello!"
-        }), "index2");
-
+exports.handle = handle;
 /*  Not a pure module */
