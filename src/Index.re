@@ -1,5 +1,8 @@
-let handle = (event) => {
-  Js.log("cambio")
+let handle = (event: option(Js.Date.t)) => {
+  switch event {
+    | Some(evt') =>  Js.log("cambio: " ++ evt' -> Js.Date.toDateString)
+    | None => Js.log("Invalid Date")
+  }
 }
 
 ReactDOMRe.renderToElementWithId(
@@ -11,7 +14,6 @@ ReactDOMRe.renderToElementWithId(
       monthHint: {""},
       yearHint: {""},
       className: {""},
-      maxLength: {2},
       onChange: {handle}
     }
   />, 

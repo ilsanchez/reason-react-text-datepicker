@@ -3,11 +3,17 @@
 
 var React = require("react");
 var ReactDOMRe = require("reason-react/src/ReactDOMRe.js");
+var Caml_option = require("bs-platform/lib/js/caml_option.js");
 var DatePickerComponent$ReactHooksTemplate = require("./DatePickerComponent.bs.js");
 
 function handle($$event) {
-  console.log("cambio");
-  return /* () */0;
+  if ($$event !== undefined) {
+    console.log("cambio: " + Caml_option.valFromOption($$event).toDateString());
+    return /* () */0;
+  } else {
+    console.log("Invalid Date");
+    return /* () */0;
+  }
 }
 
 ReactDOMRe.renderToElementWithId(React.createElement(DatePickerComponent$ReactHooksTemplate.make, {
@@ -18,7 +24,6 @@ ReactDOMRe.renderToElementWithId(React.createElement(DatePickerComponent$ReactHo
             /* monthHint */"",
             /* yearHint */"",
             /* className */"",
-            /* maxLength */2,
             /* onChange */handle
           ]
         }), "index1");

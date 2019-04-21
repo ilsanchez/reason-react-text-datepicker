@@ -4,7 +4,7 @@
 var Curry = require("bs-platform/lib/js/curry.js");
 var React = require("react");
 var Caml_format = require("bs-platform/lib/js/caml_format.js");
-var Caml_builtin_exceptions = require("bs-platform/lib/js/caml_builtin_exceptions.js");
+var Caml_option = require("bs-platform/lib/js/caml_option.js");
 var TextInput$ReactHooksTemplate = require("./TextInput.bs.js");
 
 function getDaysInMonth(month, year) {
@@ -32,10 +32,10 @@ function getDaysInMonth(month, year) {
   }
 }
 
-function isAValidPartialDate(day, month, year) {
-  var fixedMonth = month - 1 | 0;
-  if (fixedMonth >= 0 && fixedMonth < 12 && day > 0) {
-    return day <= getDaysInMonth(fixedMonth, year);
+function isAValidPartialDate(day_, month_, year_) {
+  var fixedMonth = month_ - 1 | 0;
+  if (fixedMonth >= 0 && fixedMonth < 12 && day_ > 0) {
+    return day_ <= getDaysInMonth(fixedMonth, year_);
   } else {
     return false;
   }
@@ -51,12 +51,27 @@ function getInitialDate(value) {
     var value$1 = value;
     var match = isValidDate(value$1);
     if (match) {
-      return new Date(value$1);
+      return Caml_option.some(new Date(value$1));
     } else {
-      return new Date();
+      return Caml_option.some(new Date());
+    }
+  }
+  
+}
+
+var validationRegExp = (/^[0-9]+$/g);
+
+function parseInputValue(value) {
+  var passed = validationRegExp.test(value);
+  var emptyString = value.length === 0;
+  if (passed) {
+    if (emptyString) {
+      return 0.0;
+    } else {
+      return Caml_format.caml_float_of_string(value);
     }
   } else {
-    return new Date();
+    return 0.0;
   }
 }
 
@@ -64,49 +79,70 @@ function DatePickerComponent(Props) {
   var props = Props.props;
   var dateValue = getInitialDate(props[/* value */0]);
   var match = React.useState((function () {
-          return dateValue.getDay() | 0;
+          if (dateValue !== undefined) {
+            return String(Caml_option.valFromOption(dateValue).getDay() | 0);
+          } else {
+            return "";
+          }
         }));
   var setDay = match[1];
+  var day = match[0];
   var match$1 = React.useState((function () {
-          return dateValue.getMonth() + 1.0 | 0;
+          if (dateValue !== undefined) {
+            return String(Caml_option.valFromOption(dateValue).getMonth() + 1.0 | 0);
+          } else {
+            return "";
+          }
         }));
   var setMonth = match$1[1];
+  var month = match$1[0];
   var match$2 = React.useState((function () {
-          return dateValue.getFullYear() | 0;
+          if (dateValue !== undefined) {
+            return String(Caml_option.valFromOption(dateValue).getFullYear() | 0);
+          } else {
+            return "";
+          }
         }));
   var setYear = match$2[1];
+  var year = match$2[0];
+  React.useEffect((function () {
+          var floatDay = parseInputValue(day);
+          var floatMonth = parseInputValue(month);
+          var floatYear = parseInputValue(year);
+          var valid = isAValidPartialDate(floatDay | 0, floatMonth | 0, floatYear | 0);
+          console.log("Parsed Values --> " + (floatDay.toString() + ("/" + (floatMonth.toString() + ("/" + (floatYear.toString() + ("\nOriginal Values --> " + (day + ("/" + (month + ("/" + year)))))))))));
+          if (valid) {
+            var date = new Date(floatYear, floatMonth, floatDay);
+            Curry._1(props[/* onChange */6], Caml_option.some(date));
+          } else {
+            Curry._1(props[/* onChange */6], undefined);
+          }
+          return (function (param) {
+                    console.log("Effect Called");
+                    return /* () */0;
+                  });
+        }));
   var onInputChange = function ($$event) {
     var target = $$event.target;
     var value = target.value;
     var name = target.name;
+    console.log("On Change -> " + (name + (": " + value)));
     switch (name) {
       case "day-input" : 
-          Curry._1(setDay, (function (param) {
-                  return Caml_format.caml_int_of_string(value);
-                }));
-          break;
+          return Curry._1(setDay, (function (param) {
+                        return value;
+                      }));
       case "month-input" : 
-          Curry._1(setMonth, (function (param) {
-                  return Caml_format.caml_int_of_string(value) + 1 | 0;
-                }));
-          break;
+          return Curry._1(setMonth, (function (param) {
+                        return value;
+                      }));
       case "year-input" : 
-          Curry._1(setYear, (function (param) {
-                  return Caml_format.caml_int_of_string(value);
-                }));
-          break;
+          return Curry._1(setYear, (function (param) {
+                        return value;
+                      }));
       default:
-        throw [
-              Caml_builtin_exceptions.match_failure,
-              /* tuple */[
-                "DatePickerComponent.re",
-                65,
-                12
-              ]
-            ];
+        return /* () */0;
     }
-    console.log(value + name);
-    return /* () */0;
   };
   var match$3 = props[/* hints */1];
   var match$4 = props[/* hints */1];
@@ -119,7 +155,7 @@ function DatePickerComponent(Props) {
                       props: /* record */[
                         /* className */"rtdp-day",
                         /* hintText */match$3 ? props[/* dayHint */2] : "",
-                        /* value */String(match[0]),
+                        /* value */day,
                         /* maxLength */2,
                         /* name */"day-input",
                         /* onInputChange */onInputChange
@@ -128,7 +164,7 @@ function DatePickerComponent(Props) {
                       props: /* record */[
                         /* className */"rtdp-month",
                         /* hintText */match$4 ? props[/* monthHint */3] : "",
-                        /* value */String(match$1[0]),
+                        /* value */month,
                         /* maxLength */2,
                         /* name */"month-input",
                         /* onInputChange */onInputChange
@@ -137,7 +173,7 @@ function DatePickerComponent(Props) {
                       props: /* record */[
                         /* className */"rtdp-year",
                         /* hintText */match$5 ? props[/* yearHint */4] : "",
-                        /* value */String(match$2[0]),
+                        /* value */year,
                         /* maxLength */4,
                         /* name */"year-input",
                         /* onInputChange */onInputChange
@@ -151,5 +187,7 @@ exports.getDaysInMonth = getDaysInMonth;
 exports.isAValidPartialDate = isAValidPartialDate;
 exports.isValidDate = isValidDate;
 exports.getInitialDate = getInitialDate;
+exports.validationRegExp = validationRegExp;
+exports.parseInputValue = parseInputValue;
 exports.make = make;
-/* react Not a pure module */
+/* validationRegExp Not a pure module */

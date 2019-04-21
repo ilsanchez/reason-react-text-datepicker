@@ -9,6 +9,7 @@ function TextInput(Props) {
               className: "rtdp-input" + props[/* className */0],
               maxLength: props[/* maxLength */3],
               name: props[/* name */4],
+              pattern: "[0-9]",
               placeholder: props[/* hintText */1],
               type: "text",
               value: props[/* value */2],

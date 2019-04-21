@@ -17,5 +17,6 @@ let make = (~props: textInputProps) => {
     onChange={props.onInputChange}
     name={props.name}
     maxLength={props.maxLength}
+    pattern="[0-9]"
   />
 };
