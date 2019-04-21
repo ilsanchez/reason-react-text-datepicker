@@ -160,7 +160,9 @@ function DatePickerComponent(Props) {
                         /* name */"day-input",
                         /* onInputChange */onInputChange
                       ]
-                    }), React.createElement(TextInput$ReactHooksTemplate.make, {
+                    }), React.createElement("span", {
+                      className: "rtdp-separator"
+                    }, "/"), React.createElement(TextInput$ReactHooksTemplate.make, {
                       props: /* record */[
                         /* className */"rtdp-month",
                         /* hintText */match$4 ? props[/* monthHint */3] : "",
@@ -169,7 +171,9 @@ function DatePickerComponent(Props) {
                         /* name */"month-input",
                         /* onInputChange */onInputChange
                       ]
-                    }), React.createElement(TextInput$ReactHooksTemplate.make, {
+                    }), React.createElement("span", {
+                      className: "rtdp-separator"
+                    }, "/"), React.createElement(TextInput$ReactHooksTemplate.make, {
                       props: /* record */[
                         /* className */"rtdp-year",
                         /* hintText */match$5 ? props[/* yearHint */4] : "",

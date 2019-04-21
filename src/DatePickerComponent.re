@@ -90,7 +90,7 @@ let make = (~props: textDatePickerProps) => {
       day ++ "/" ++
       month ++ "/" ++
       year);
-    let _ = switch valid {
+    switch valid {
       | true => {
           let date = Js.Date.makeWithYMD(~year = floatYear, ~month = floatMonth, ~date = floatDay, ());
           props.onChange(Some(date));
@@ -126,7 +126,7 @@ let make = (~props: textDatePickerProps) => {
             maxLength:{2}
           }
         />
-        // <Separator />
+        <span className="rtdp-separator">{ReasonReact.string("/")}</span>
         <TextInput
           props = {
             name:"month-input",
@@ -137,7 +137,7 @@ let make = (~props: textDatePickerProps) => {
             maxLength:{2}
           }
         />
-        // <Separator />
+        <span className="rtdp-separator">{ReasonReact.string("/")}</span>
         <TextInput
           props = {
             name:"year-input",
