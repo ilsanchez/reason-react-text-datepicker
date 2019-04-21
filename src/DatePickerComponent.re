@@ -77,16 +77,16 @@ let make = (~props: textDatePickerProps) => {
   );
 
   React.useEffect(() => {
-    let floatDay = parseInputValue(day);
-    let floatMonth = parseInputValue(month);
-    let floatYear = parseInputValue(year);
-    let valid = isAValidPartialDate(
-      floatDay -> truncate, 
-      floatMonth -> truncate, 
-      floatYear -> truncate
-    );
-    
     if(Js.String.length(year) === 4) {
+      let floatDay = parseInputValue(day);
+      let floatMonth = parseInputValue(month);
+      let floatYear = parseInputValue(year);
+      let valid = isAValidPartialDate(
+        floatDay -> truncate, 
+        floatMonth -> truncate, 
+        floatYear -> truncate
+      );
+    
       switch valid {
         | true => {
             let date = Js.Date.makeWithYMD(~year = floatYear, ~month = floatMonth, ~date = floatDay, ());
