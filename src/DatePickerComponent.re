@@ -21,7 +21,9 @@ let getDaysInMonth = (month: int, year: int): int => {
 
 let isAValidPartialDate = (day_: int, month_: int, year_: int): bool => {
   let fixedMonth = month_ - 1;
-  fixedMonth >= 0 && fixedMonth < 12 && day_ > 0 && day_ <= getDaysInMonth(fixedMonth, year_);
+  year_ > 0 && month_ > 0 && day_ > 0 && 
+  fixedMonth >= 0 && fixedMonth < 12 && 
+  day_ <= getDaysInMonth(fixedMonth, year_);
 }
 
 let isValidDate = (value: string): bool => {
@@ -40,14 +42,15 @@ let getInitialDate = (value: option(string)): option(Js.Date.t) => {
   };
 };
 
-let validationRegExp = [%bs.re "/^[0-9]+$/g"];
+// let validationRegExp = [%bs.re "/^[0-9]+$/g"];
 let parseInputValue = (value: string): float => {
-    let passed = Js.Re.test_(validationRegExp, value);
-    let emptyString = Js.String.length(value) === 0;
-    switch (passed, emptyString) {
-      | (true, false) => float_of_string(value)
-      | _ => 0.0
-    }
+  let validationRegExp = [%bs.re "/^\d+$/g"];
+  let passed = Js.Re.test_(validationRegExp, value);
+  let emptyString = Js.String.length(value) === 0;
+  switch (passed, emptyString) {
+    | (true, false) => float_of_string(value)
+    | _ => -1.0
+  }
 };
 
 [@react.component]
@@ -82,22 +85,17 @@ let make = (~props: textDatePickerProps) => {
       floatMonth -> truncate, 
       floatYear -> truncate
     );
-    Js.log("Parsed Values --> " ++
-      floatDay -> Js.Float.toString ++ "/" ++ 
-      floatMonth -> Js.Float.toString ++ "/" ++ 
-      floatYear -> Js.Float.toString ++ "\n" ++
-      "Original Values --> " ++
-      day ++ "/" ++
-      month ++ "/" ++
-      year);
-    switch valid {
-      | true => {
-          let date = Js.Date.makeWithYMD(~year = floatYear, ~month = floatMonth, ~date = floatDay, ());
-          props.onChange(Some(date));
-        }
-      | false => props.onChange(None);      
+    
+    if(Js.String.length(year) === 4) {
+      switch valid {
+        | true => {
+            let date = Js.Date.makeWithYMD(~year = floatYear, ~month = floatMonth, ~date = floatDay, ());
+            props.onChange(Some(date));
+          }
+        | false => props.onChange(None);      
+      }
     }
-    Some(() => Js.log("Effect Called"));
+    Some(() => Js.log());
   });
 
   let onInputChange = (event) => {
@@ -105,7 +103,7 @@ let make = (~props: textDatePickerProps) => {
     
     let value: string = target##value;
     let name: string = target##name;
-    Js.log("On Change -> " ++ name ++ ": " ++ value);
+
     switch name {
       | "day-input" => setDay(_ => value)
       | "month-input" => setMonth(_ => value)
@@ -114,8 +112,8 @@ let make = (~props: textDatePickerProps) => {
     }
   };
 
-  <span className="rtdp">
-      <span className="rtdp-inner">
+  <span className=Styles.rtdpSpan>
+      <span className=Styles.rtdpSpanInner>        
         <TextInput
           props={
             name: "day-input",
@@ -126,7 +124,7 @@ let make = (~props: textDatePickerProps) => {
             maxLength:{2}
           }
         />
-        <span className="rtdp-separator">{ReasonReact.string("/")}</span>
+        <span className=Styles.rtdpSeparator>{ReasonReact.string("/")}</span>
         <TextInput
           props = {
             name:"month-input",
@@ -137,7 +135,7 @@ let make = (~props: textDatePickerProps) => {
             maxLength:{2}
           }
         />
-        <span className="rtdp-separator">{ReasonReact.string("/")}</span>
+        <span className=Styles.rtdpSeparator>{ReasonReact.string("/")}</span>
         <TextInput
           props = {
             name:"year-input",

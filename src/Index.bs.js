@@ -19,10 +19,10 @@ function handle($$event) {
 ReactDOMRe.renderToElementWithId(React.createElement(DatePickerComponent$ReactHooksTemplate.make, {
           props: /* record */[
             /* value */undefined,
-            /* hints */false,
-            /* dayHint */"",
-            /* monthHint */"",
-            /* yearHint */"",
+            /* hints */true,
+            /* dayHint */"DD",
+            /* monthHint */"MM",
+            /* yearHint */"YYYY",
             /* className */"",
             /* onChange */handle
           ]

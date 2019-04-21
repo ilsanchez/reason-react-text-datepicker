@@ -2,11 +2,13 @@
 'use strict';
 
 var React = require("react");
+var Styles$ReactHooksTemplate = require("./Styles.bs.js");
 
 function TextInput(Props) {
   var props = Props.props;
+  var match = props[/* className */0] === "rtdp-year";
   return React.createElement("input", {
-              className: "rtdp-input" + props[/* className */0],
+              className: match ? Styles$ReactHooksTemplate.rtdpYearInput : Styles$ReactHooksTemplate.rtdpInput,
               maxLength: props[/* maxLength */3],
               name: props[/* name */4],
               pattern: "[0-9]",

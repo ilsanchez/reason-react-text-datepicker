@@ -11,7 +11,10 @@ type textInputProps = {
 let make = (~props: textInputProps) => {
   <input
     type_="text"
-    className={"rtdp-input" ++ props.className}
+    className={props.className === "rtdp-year" 
+      ? Styles.rtdpYearInput 
+      : Styles.rtdpInput
+    }
     placeholder={props.hintText}
     value={props.value}
     onChange={props.onInputChange}

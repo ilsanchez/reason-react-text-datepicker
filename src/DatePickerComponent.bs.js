@@ -5,6 +5,7 @@ var Curry = require("bs-platform/lib/js/curry.js");
 var React = require("react");
 var Caml_format = require("bs-platform/lib/js/caml_format.js");
 var Caml_option = require("bs-platform/lib/js/caml_option.js");
+var Styles$ReactHooksTemplate = require("./Styles.bs.js");
 var TextInput$ReactHooksTemplate = require("./TextInput.bs.js");
 
 function getDaysInMonth(month, year) {
@@ -34,7 +35,7 @@ function getDaysInMonth(month, year) {
 
 function isAValidPartialDate(day_, month_, year_) {
   var fixedMonth = month_ - 1 | 0;
-  if (fixedMonth >= 0 && fixedMonth < 12 && day_ > 0) {
+  if (year_ > 0 && month_ > 0 && day_ > 0 && fixedMonth >= 0 && fixedMonth < 12) {
     return day_ <= getDaysInMonth(fixedMonth, year_);
   } else {
     return false;
@@ -59,19 +60,18 @@ function getInitialDate(value) {
   
 }
 
-var validationRegExp = (/^[0-9]+$/g);
-
 function parseInputValue(value) {
+  var validationRegExp = (/^\d+$/g);
   var passed = validationRegExp.test(value);
   var emptyString = value.length === 0;
   if (passed) {
     if (emptyString) {
-      return 0.0;
+      return -1.0;
     } else {
       return Caml_format.caml_float_of_string(value);
     }
   } else {
-    return 0.0;
+    return -1.0;
   }
 }
 
@@ -110,15 +110,16 @@ function DatePickerComponent(Props) {
           var floatMonth = parseInputValue(month);
           var floatYear = parseInputValue(year);
           var valid = isAValidPartialDate(floatDay | 0, floatMonth | 0, floatYear | 0);
-          console.log("Parsed Values --> " + (floatDay.toString() + ("/" + (floatMonth.toString() + ("/" + (floatYear.toString() + ("\nOriginal Values --> " + (day + ("/" + (month + ("/" + year)))))))))));
-          if (valid) {
-            var date = new Date(floatYear, floatMonth, floatDay);
-            Curry._1(props[/* onChange */6], Caml_option.some(date));
-          } else {
-            Curry._1(props[/* onChange */6], undefined);
+          if (year.length === 4) {
+            if (valid) {
+              var date = new Date(floatYear, floatMonth, floatDay);
+              Curry._1(props[/* onChange */6], Caml_option.some(date));
+            } else {
+              Curry._1(props[/* onChange */6], undefined);
+            }
           }
           return (function (param) {
-                    console.log("Effect Called");
+                    console.log(/* () */0);
                     return /* () */0;
                   });
         }));
@@ -126,7 +127,6 @@ function DatePickerComponent(Props) {
     var target = $$event.target;
     var value = target.value;
     var name = target.name;
-    console.log("On Change -> " + (name + (": " + value)));
     switch (name) {
       case "day-input" : 
           return Curry._1(setDay, (function (param) {
@@ -148,9 +148,9 @@ function DatePickerComponent(Props) {
   var match$4 = props[/* hints */1];
   var match$5 = props[/* hints */1];
   return React.createElement("span", {
-              className: "rtdp"
+              className: Styles$ReactHooksTemplate.rtdpSpan
             }, React.createElement("span", {
-                  className: "rtdp-inner"
+                  className: Styles$ReactHooksTemplate.rtdpSpanInner
                 }, React.createElement(TextInput$ReactHooksTemplate.make, {
                       props: /* record */[
                         /* className */"rtdp-day",
@@ -161,7 +161,7 @@ function DatePickerComponent(Props) {
                         /* onInputChange */onInputChange
                       ]
                     }), React.createElement("span", {
-                      className: "rtdp-separator"
+                      className: Styles$ReactHooksTemplate.rtdpSeparator
                     }, "/"), React.createElement(TextInput$ReactHooksTemplate.make, {
                       props: /* record */[
                         /* className */"rtdp-month",
@@ -172,7 +172,7 @@ function DatePickerComponent(Props) {
                         /* onInputChange */onInputChange
                       ]
                     }), React.createElement("span", {
-                      className: "rtdp-separator"
+                      className: Styles$ReactHooksTemplate.rtdpSeparator
                     }, "/"), React.createElement(TextInput$ReactHooksTemplate.make, {
                       props: /* record */[
                         /* className */"rtdp-year",
@@ -191,7 +191,6 @@ exports.getDaysInMonth = getDaysInMonth;
 exports.isAValidPartialDate = isAValidPartialDate;
 exports.isValidDate = isValidDate;
 exports.getInitialDate = getInitialDate;
-exports.validationRegExp = validationRegExp;
 exports.parseInputValue = parseInputValue;
 exports.make = make;
-/* validationRegExp Not a pure module */
+/* react Not a pure module */

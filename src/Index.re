@@ -9,10 +9,10 @@ ReactDOMRe.renderToElementWithId(
   <DatePickerComponent 
     props = {
       value: None,
-      hints: {false},
-      dayHint: {""},
-      monthHint: {""},
-      yearHint: {""},
+      hints: {true},
+      dayHint: {"DD"},
+      monthHint: {"MM"},
+      yearHint: {"YYYY"},
       className: {""},
       onChange: {handle}
     }
