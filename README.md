@@ -1,5 +1,20 @@
-# simple-date-picker-rml
+# Reason-React text datepicker
 
+**Important Note**: This project its only a re-write of the original [react-text-datepicker](https://github.com/pablovila/react-text-datepicker) writted by [@pablovila](https://github.com/pablovila) as a `React` component.
+
+**This component should'nt be used for production** it is unestable and may contains several bugs.
+
+//@TODOS:
+  - Improve CSS.
+  - Clean up unnecesary or redundant code.
+  - Improve types definitions in order to avoid a lot of type conversions.
+  - Improve `props` format on components.
+  - Make this project a component library
+
+Many other `@TODOS` will be found in source code and any PR, Issue or suggestion its welcome!
+
+
+Default README...
 ## Run Project
 
 ```sh

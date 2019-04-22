@@ -1,4 +1,3 @@
-
 type textDatePickerProps = {
   value: option(string),
   hints: bool,
@@ -53,6 +52,13 @@ let parseInputValue = (value: string): float => {
   }
 };
 
+// @TODO: Its there any way to set props as only `props` in 'contructor' but calling the component in a traditional way?
+/**
+* Like <TextDatePicker value={...} hints={...} .../> but 
+* only using `props` as argument of `make` function, instead of
+* declare all `textDatePickerProps` properties as arguments.
+* Ref to line 124
+*/
 [@react.component]
 let make = (~props: textDatePickerProps) => {
   let dateValue = getInitialDate(props.value);
@@ -95,6 +101,7 @@ let make = (~props: textDatePickerProps) => {
         | false => props.onChange(None);      
       }
     }
+    // @TODO: Should be there any other way to return a noop `unit` function
     Some(() => Js.log());
   });
 

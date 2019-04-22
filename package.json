@@ -1,6 +1,6 @@
 {
-  "name": "simple-date-picker-rml",
-  "version": "0.1.0",
+  "name": "reson-text-datepicker",
+  "version": "0.9.0",
   "scripts": {
     "build": "bsb -make-world",
     "start": "bsb -make-world -w",
@@ -11,7 +11,10 @@
     "server": "webpack-dev-server"
   },
   "keywords": [
-    "BuckleScript"
+    "BuckleScript",
+    "ReasonML",
+    "ReactJS",
+    "Reason-React"
   ],
   "author": "",
   "license": "MIT",
